@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
+using Domain;
 
-namespace Domain
+namespace AWS.Data
 {
-    public interface IReviewData
-    {
-        IEnumerable<Review> GetReviews();
-        Review GetReview();
-    }
-
     public class ReviewData : IReviewData
     {
         public IEnumerable<Review> GetReviews()
