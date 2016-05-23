@@ -1,6 +1,6 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 
-namespace AWS.Data.DynamoDb.Tables
+namespace API.Data.DynamoDb.Tables
 {
     public class ReviewTable
     {

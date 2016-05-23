@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Domain;
 
-namespace AWS.Data
+namespace API.Data
 {
     public class ReviewData : IReviewData
     {

@@ -2,7 +2,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 
-namespace AWS.Data.DynamoDb
+namespace API.Data.DynamoDb
 {
     public abstract class DynamoDbTable
     {

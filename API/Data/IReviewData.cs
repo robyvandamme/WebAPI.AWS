@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Domain;
 
-namespace Domain
+namespace API.Data
 {
     public interface IReviewData
     {
