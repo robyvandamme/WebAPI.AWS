@@ -17,6 +17,8 @@ namespace API
             formatters.Remove(formatters.XmlFormatter);
             // Use camel case for JSON data.
             formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.SerializerSettings.Converters.Add
+                (new Newtonsoft.Json.Converters.StringEnumConverter());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

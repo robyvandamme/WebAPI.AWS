@@ -12,7 +12,7 @@ namespace API.Data
 
         public Review GetReview()
         {
-            return new BookReview();
+            return new Review();
         }
     }
 }

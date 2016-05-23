@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,26 +14,33 @@ namespace API.Controllers
         public IEnumerable<Review> Get()
         {
             var list = new List<Review>();
-            var book = new BookReview
+            var book = new Review
             {
                 Id = 1,
-                Type = "Book",
-                Tenant = "Site1",
-                Url = "http://amazon.com",
-                Author = "William Gibson",
-                Title = "Pattern Recognition",
-                Genre = "Science-Fiction?",
+                Subject = Subject.Book, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
+                //Tenant = "Site1",
+                Url = "http://amazon.com", 
+                Book = new Book()
+                {
+                    Author = "William Gibson",
+                    Title = "Pattern Recognition",
+                    Genre = "Science-Fiction?"
+                },
                 Tags = new []{"Science-Ficton,", "Branding"}
+
             };
             list.Add(book);
 
-            var app = new ApplicationReview()
+            var app = new Review()
             {
                 Id = 2,
-                Type = "Application",
-                Tenant = "Site1",
+                Subject = Subject.Application,
+                //Tenant = "Site1",
                 Url = "http://pluralsight.com",
-                Name = "Pluralsight",
+                Application = new Application()
+                {
+                Name = "Pluralsight"
+                },
                 Tags = new []{"Learning"}
             };
             list.Add(app);
@@ -42,23 +50,29 @@ namespace API.Controllers
 
         public Review Get(int id)
         {
-            var book = new BookReview
+            var review = new Review
             {
                 Id = 1,
-                Type = "Book",
-                Tenant = "Site1",
+                Subject = Subject.Book, 
+                //Tenant = "Site1",
                 Url = "http://amazon.com",
-                Author = "William Gibson",
-                Title = "Pattern Recognition"
-            };
+                Book = new Book()
+                {
+                    Author = "William Gibson",
+                    Title = "Pattern Recognition",
+                    Genre = "Science-Fiction?"
+                },
+                Tags = new[] { "Science-Ficton,", "Branding" }
 
-            return book;
+            };
+            return review;
+
         }
 
         // POST: api/Reviews
-        public HttpResponseMessage Post(Review review) // what happens if we send in a bookreview here, will it automatically map all the properties?
+        public HttpResponseMessage Post(Review review)
         {
-            Console.Write(review);
+            Debug.Write(review);
             //TODO: return something here, like the id or a link to the created/ updated resource.
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
