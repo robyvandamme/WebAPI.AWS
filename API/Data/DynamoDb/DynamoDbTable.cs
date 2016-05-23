@@ -18,6 +18,9 @@ namespace API.Data.DynamoDb
 
     public class DynamoDbTable<T> : DynamoDbTable
     {
+        // this will not work if we start by using the resources as source for the table operations
+        // why would we add intermediary objects? we will need mapping.... 
+        // since we have a schema-less datastore, we should be able to 
         private static readonly string TableName = typeof(T).Name;
 
         // do we need to inject something here? Maybe the client, if we decide not to make this one private static but have the container take care of that...

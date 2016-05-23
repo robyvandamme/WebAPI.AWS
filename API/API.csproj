@@ -16,7 +16,7 @@
     <RootNamespace>API</RootNamespace>
     <AssemblyName>API</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -104,6 +104,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Data\DynamoDb\DynamoDbTable.cs" />
+    <Compile Include="Data\DynamoDb\Samples\DataModelSample.cs" />
+    <Compile Include="Data\DynamoDb\Samples\DataModelSchema.cs" />
+    <Compile Include="Data\DynamoDb\Samples\TableOperations.cs" />
     <Compile Include="Data\DynamoDb\Tables\Review.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -143,7 +146,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51513</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51513/</IISUrl>
+          <IISUrl>http://localhost/API</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
