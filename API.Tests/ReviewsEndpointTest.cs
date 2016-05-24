@@ -43,7 +43,7 @@ namespace API.Tests
             var response = client.PostAsync("http://localhost/api/reviews", content);
             var result = response.Result.StatusCode;
             
-            Assert.AreEqual(HttpStatusCode.Accepted, result);
+            Assert.AreEqual(HttpStatusCode.OK, result);
         }
 
     }
