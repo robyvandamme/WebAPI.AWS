@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using API.Config;
 using Newtonsoft.Json.Serialization;
 
 namespace API
@@ -10,13 +11,15 @@ namespace API
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
-            // remove the xml formatter, just use json for now
+            // configure CORS
+            var corsPolicyAttribute = new CustomCorsPolicyAttribute();
+            config.EnableCors(corsPolicyAttribute);
+            // remove the XML formatter, just use JSON for now
             var formatters = GlobalConfiguration.Configuration.Formatters;
             formatters.Remove(formatters.XmlFormatter);
             // Use camel case for JSON data.
             formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            // Enum conversion
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add
                 (new Newtonsoft.Json.Converters.StringEnumConverter());
 

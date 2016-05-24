@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using API.Resources;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace API.Tests
     [TestFixture]
     public class ReviewsEndpointTest
     {
+        
         [Test]
         public void TestPost()
         {
@@ -23,7 +25,6 @@ namespace API.Tests
                 Id = 1,
                 Subject = Subject.Book,
                 //Tenant = "Site1",
-                Url = "http://amazon.com",
                 Author = "Someone on the internet", 
                 Tags = new[] { "Science-Ficton,", "Branding" },
                 Book = new Book()
@@ -31,6 +32,7 @@ namespace API.Tests
                     Author = "William Gibson",
                     Title = "Pattern Recognition",
                     Genre = "Science-Fiction?",
+                    Url = "http://amazon.com"
                 }
             };
 

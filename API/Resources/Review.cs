@@ -11,18 +11,17 @@ namespace API.Resources
         public string Text { get; set; }
         public string Author { get; set; }
 
-        public string Url { get; set; }
         public string[] Tags { get; set; }
 
         public Book Book { get; set; } // so, different approach.... instead of inheritance, simply add the type to the review, depending on what is sent we know the review type
-        public Application Application { get; set; }
+        public App App { get; set; }
         
     }
 
     public enum Subject
     {
         Book,
-        Application
+        App
     }
 
     //[DynamoDBTable("Review")]
@@ -31,11 +30,14 @@ namespace API.Resources
         public string Author { get; set; }
         public string Title { get; set; }
         public string Genre { get; set; }
+        public string Url { get; set; }
+
     }
 
     //[DynamoDBTable("Review")]
-    public class Application
+    public class App
     {
         public string Name { get; set; }
+        public string Url { get; set; }
     }
 }
