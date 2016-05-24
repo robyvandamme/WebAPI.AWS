@@ -1,6 +1,4 @@
-﻿using Amazon.DynamoDBv2.DataModel;
-
-namespace API.Resources
+﻿namespace API.Model
 {
     public class Review
     {
@@ -16,28 +14,5 @@ namespace API.Resources
         public Book Book { get; set; } // so, different approach.... instead of inheritance, simply add the type to the review, depending on what is sent we know the review type
         public App App { get; set; }
         
-    }
-
-    public enum Subject
-    {
-        Book,
-        App
-    }
-
-    //[DynamoDBTable("Review")]
-    public class Book
-    {
-        public string Author { get; set; }
-        public string Title { get; set; }
-        public string Genre { get; set; }
-        public string Url { get; set; }
-
-    }
-
-    //[DynamoDBTable("Review")]
-    public class App
-    {
-        public string Name { get; set; }
-        public string Url { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using API.Data;
-using API.Resources;
+using API.Model;
 
 namespace API.Controllers
 {

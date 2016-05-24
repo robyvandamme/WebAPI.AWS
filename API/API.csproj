@@ -122,8 +122,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Data\IReviewData.cs" />
+    <Compile Include="Model\App.cs" />
+    <Compile Include="Model\Book.cs" />
+    <Compile Include="Model\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Review.cs" />
+    <Compile Include="Model\Review.cs" />
     <Compile Include="Data\ReviewData.cs" />
   </ItemGroup>
   <ItemGroup>

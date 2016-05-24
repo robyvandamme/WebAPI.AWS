@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using API.Resources;
+using API.Model;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
