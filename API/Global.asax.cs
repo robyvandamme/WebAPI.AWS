@@ -11,6 +11,7 @@ namespace API
     {
         protected void Application_Start()
         {
+            ContainerConfig.Configure();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }
