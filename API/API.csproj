@@ -114,6 +114,7 @@
     <Compile Include="Config\Constants.cs" />
     <Compile Include="Config\Context.cs" />
     <Compile Include="Config\CorsPolicyProvider.cs" />
+    <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Data\DynamoDb\DynamoDbTable.cs" />
     <Compile Include="Config\IContext.cs" />
