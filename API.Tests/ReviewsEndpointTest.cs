@@ -22,8 +22,8 @@ namespace API.Tests
         {
             var bookReview = new Review()
             {
-                Id = 1,
-                Subject = Subject.Book,
+                Id = Guid.NewGuid(),
+                Category = Category.Book,
                 //Tenant = "Site1",
                 Author = "Someone on the internet", 
                 Tags = new[] { "Science-Ficton,", "Branding" },

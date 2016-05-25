@@ -25,7 +25,7 @@ namespace API.Controllers
             return reviews;
         }
 
-        public Review Get(int id)
+        public Review Get(Guid id) // or do we need to use a string here and cast?
         {
             var review = _reviewData.GetReview(id);
             return review;

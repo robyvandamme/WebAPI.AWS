@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Web.Http;
+using API.Config;
 using API.Data;
 using Autofac;
 using Autofac.Integration.WebApi;
@@ -21,6 +22,7 @@ namespace API
             builder.RegisterWebApiFilterProvider(config);
 
             builder.RegisterType<ReviewData>().As<IReviewData>();
+            builder.RegisterType<Context>().As<IContext>();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

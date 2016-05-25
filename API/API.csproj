@@ -111,26 +111,30 @@
   <ItemGroup>
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Config\Constants.cs" />
+    <Compile Include="Config\Context.cs" />
     <Compile Include="Config\CorsPolicyProvider.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Data\DynamoDb\DynamoDbTable.cs" />
+    <Compile Include="Config\IContext.cs" />
     <Compile Include="Data\DynamoDb\Samples\DataModelSample.cs" />
     <Compile Include="Data\DynamoDb\Samples\DataModelSchema.cs" />
     <Compile Include="Data\DynamoDb\Samples\TableOperations.cs" />
-    <Compile Include="Data\DynamoDb\Tables\Review.cs" />
+    <Compile Include="Data\DynamoDb\Tables\ReviewTable.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Data\IReviewData.cs" />
     <Compile Include="Model\App.cs" />
     <Compile Include="Model\Book.cs" />
-    <Compile Include="Model\Subject.cs" />
+    <Compile Include="Model\Category.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Review.cs" />
     <Compile Include="Data\ReviewData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="app.config.local" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,6 +1,6 @@
 namespace API.Model
 {
-    public enum Subject
+    public enum Category
     {
         Book,
         App

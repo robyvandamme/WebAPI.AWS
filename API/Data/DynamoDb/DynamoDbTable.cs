@@ -1,45 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
+using API.Config;
 
 namespace API.Data.DynamoDb
 {
     public abstract class DynamoDbTable
-    {
+    { 
         protected static readonly AmazonDynamoDBClient DbClient = new AmazonDynamoDBClient();
 
-        protected DynamoDbTable()
+        protected DynamoDbTable(IContext context)
         {
             // TODO: this is only necessary for dev.. need to set this somewhere else 
             // http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html
-            DbClient.Config.ServiceURL = "http://localhost:8000";
+            // we probably need to do the same thing for every environment we have....    
+            if (context.Environment.Equals(Constants.DevEnvironment, StringComparison.OrdinalIgnoreCase))
+            {
+                 DbClient.Config.ServiceURL = "http://localhost:8000";
+            }
         }
     }
 
     public class DynamoDbTable<T> : DynamoDbTable
     {
-        // this will not work if we start by using the resources as source for the table operations
-        // why would we add intermediary objects? we will need mapping.... 
-        // since we have a schema-less datastore, we should be able to 
-        private static readonly string TableName = typeof(T).Name;
+        public string TableName { get;}
 
         // do we need to inject something here? Maybe the client, if we decide not to make this one private static but have the container take care of that...
-        public DynamoDbTable()
+        public DynamoDbTable(IContext context) : base(context)
         {
-
+            // we also need a constant for the environment to append to the tablename
+            TableName = GetTableName(context);
         }
 
+        // we need to create a table for each environment that we have...
         public void CreateTable()
         {
-            List<string> currentTables = DbClient.ListTables().TableNames; // or we use describe table... which one is the best option in this case?
+            List<string> currentTables = DbClient.ListTables().TableNames;
 
             if (!currentTables.Contains(TableName))
             {
                 DbClient.CreateTable(new CreateTableRequest
                 {
                     TableName = TableName, // TODO: what happens if I don't specify throughput?
-                    //ProvisionedThroughput =
-                    //    new ProvisionedThroughput { ReadCapacityUnits = 3, WriteCapacityUnits = 1 },
+                                            //ProvisionedThroughput =
+                                            //    new ProvisionedThroughput { ReadCapacityUnits = 3, WriteCapacityUnits = 1 },
+
+                    // this also needs to come from the table definition
                     KeySchema = new List<KeySchemaElement>
                         {
                             new KeySchemaElement
@@ -84,6 +94,16 @@ namespace API.Data.DynamoDb
                     // get resource not found. So we handle the potential exception.
                 }
             } while (status != "ACTIVE");
+        }
+ 
+        private string GetTableName(IContext context)
+        { 
+            var suffix = "-" + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(context.Environment); ;
+
+            var attribute = typeof(T).GetCustomAttributes(typeof(DynamoDBTableAttribute), true)
+               .FirstOrDefault() as DynamoDBTableAttribute;
+     
+            return attribute != null ? attribute.TableName + suffix : typeof(T).Name + suffix;
         }
     }
 }

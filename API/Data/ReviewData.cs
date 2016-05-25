@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using API.Model;
 
 namespace API.Data
@@ -10,8 +11,8 @@ namespace API.Data
             var list = new List<Review>();
             var book = new Review
             {
-                Id = 1,
-                Subject = Subject.Book, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
+                Id = Guid.NewGuid(),
+                Category = Category.Book, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
                 //Tenant = "Site1",
                 Book = new Book()
                 {
@@ -27,8 +28,8 @@ namespace API.Data
 
             var app = new Review()
             {
-                Id = 2,
-                Subject = Subject.App,
+                Id = Guid.NewGuid(),
+                Category = Category.App,
                 //Tenant = "Site1",
                 App = new App()
                 {
@@ -43,12 +44,12 @@ namespace API.Data
             return list;
         }
 
-        public Review GetReview(int id)
+        public Review GetReview(Guid id)
         {
             var review = new Review
             {
-                Id = 1,
-                Subject = Subject.Book,
+                Id = Guid.NewGuid(),
+                Category = Category.Book,
                 //Tenant = "Site1",
                 Book = new Book()
                 {
