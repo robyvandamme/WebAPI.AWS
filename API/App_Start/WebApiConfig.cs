@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using API.Config;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace API
@@ -15,13 +16,14 @@ namespace API
             var corsPolicyAttribute = new CustomCorsPolicyAttribute();
             config.EnableCors(corsPolicyAttribute);
             // remove the XML formatter, just use JSON for now
-            var formatters = GlobalConfiguration.Configuration.Formatters;
-            formatters.Remove(formatters.XmlFormatter);
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
             // Use camel case for JSON data.
-            formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); 
             // Enum conversion
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add
                 (new Newtonsoft.Json.Converters.StringEnumConverter());
+            // ignore null values in output
+            config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
             // Web API routes
             config.MapHttpAttributeRoutes();
