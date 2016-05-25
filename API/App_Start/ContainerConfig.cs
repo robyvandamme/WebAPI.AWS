@@ -22,7 +22,7 @@ namespace API
             builder.RegisterWebApiFilterProvider(config);
 
             builder.RegisterType<ReviewData>().As<IReviewData>();
-            builder.RegisterType<Context>().As<IContext>();
+            builder.RegisterType<Context>().As<IContext>().SingleInstance();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
