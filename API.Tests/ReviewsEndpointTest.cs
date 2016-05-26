@@ -26,7 +26,7 @@ namespace API.Tests
                 Category = Category.Book,
                 //Tenant = "Site1",
                 Author = "Someone on the internet", 
-                Tags = new[] { "Science-Ficton,", "Branding" },
+                Tags = new List<string>() { "Science-Ficton,", "Branding" },
                 Book = new Book()
                 {
                     Author = "William Gibson",

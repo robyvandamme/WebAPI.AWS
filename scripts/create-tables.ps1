@@ -1,0 +1,1 @@
+aws dynamodb create-table --endpoint-url http://localhost:8000 --table-name Review --attribute-definitions AttributeName=Category,AttributeType=N AttributeName=Id,AttributeType=S --key-schema AttributeName=Category,KeyType=HASH AttributeName=Id,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=3,WriteCapacityUnits=3

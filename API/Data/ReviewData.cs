@@ -1,66 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
+using Amazon.Util;
 using API.Model;
 
 namespace API.Data
 {
     public class ReviewData : IReviewData
     {
-        public IEnumerable<Review> GetReviews()
+        private static readonly AmazonDynamoDBClient DbClient;
+
+        static ReviewData()
         {
-            var list = new List<Review>();
-            var book = new Review
-            {
-                Id = Guid.NewGuid(),
-                Category = Category.Book, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
-                //Tenant = "Site1",
-                Book = new Book()
-                {
-                    Author = "William Gibson",
-                    Title = "Pattern Recognition",
-                    Genre = "Science-Fiction?",
-                    Url = "http://amazon.com",
-                },
-                Tags = new[] { "Science-Ficton,", "Branding" }
-
-            };
-            list.Add(book);
-
-            var app = new Review()
-            {
-                Id = Guid.NewGuid(),
-                Category = Category.App,
-                //Tenant = "Site1",
-                App = new App()
-                {
-                    Name = "Pluralsight",
-                    Url = "http://pluralsight.com",
-
-                },
-                Tags = new[] { "Learning" }
-            };
-            list.Add(app);
-
-            return list;
+            var config = new AmazonDynamoDBConfig();
+            config.ServiceURL = "http://localhost:8000";
+            DbClient = new AmazonDynamoDBClient(config);
         }
 
-        public Review GetReview(Guid id)
+        public IEnumerable<Review> GetReviews()
         {
-            var review = new Review
-            {
-                Id = Guid.NewGuid(),
-                Category = Category.Book,
-                //Tenant = "Site1",
-                Book = new Book()
-                {
-                    Author = "William Gibson",
-                    Title = "Pattern Recognition",
-                    Genre = "Science-Fiction?",
-                    Url = "http://amazon.com",
-                },
-                Tags = new[] { "Science-Ficton,", "Branding" }
+            DynamoDBContext context = new DynamoDBContext(DbClient);
+            IEnumerable<Review> reviews = context.Scan<Review>();
+            return reviews;
+        }
 
-            };
+        public IEnumerable<Review> GetReviewsByCategory(Category category)
+        {
+            DynamoDBContext context = new DynamoDBContext(DbClient);
+            IEnumerable<Review> reviews =
+              context.Query<Review>(category);
+
+            return reviews;
+        }
+
+        public Review GetReview(Category category, Guid id)
+        {
+            DynamoDBContext context = new DynamoDBContext(DbClient);
+            Review review = context.Load<Review>(category,id);
             return review;
         }
 
@@ -68,5 +48,18 @@ namespace API.Data
         {
             return 1;
         }
+
+        public void CreateReview(Review review)
+        {
+            DynamoDBContext context = new DynamoDBContext(DbClient);
+            context.Save(review);
+        }
+
+        public void DeleteReview(Review review)
+        {
+            DynamoDBContext context = new DynamoDBContext(DbClient);
+            context.Delete(review);
+        }
+
     }
 }

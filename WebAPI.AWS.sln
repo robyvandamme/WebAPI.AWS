@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Tests", "API.Tests\API.Tests.csproj", "{FFB947B3-5C7D-4711-B910-B68140829124}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A06EB27E-1BE8-4D68-BBE4-488BBD8B9777}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\create-tables.ps1 = scripts\create-tables.ps1
+		scripts\delete-tables.ps1 = scripts\delete-tables.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

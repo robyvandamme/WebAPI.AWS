@@ -120,8 +120,6 @@
     <Compile Include="Config\IContext.cs" />
     <Compile Include="Data\DynamoDb\Samples\DataModelSample.cs" />
     <Compile Include="Data\DynamoDb\Samples\DataModelSchema.cs" />
-    <Compile Include="Data\DynamoDb\Samples\TableOperations.cs" />
-    <Compile Include="Data\DynamoDb\Tables\ReviewTable.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

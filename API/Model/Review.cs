@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Amazon.DynamoDBv2.DataModel;
 
 namespace API.Model
@@ -24,7 +25,8 @@ namespace API.Model
 
         public string Author { get; set; }
 
-        public string[] Tags { get; set; }
+        //[DynamoDBProperty()]
+        public List<string> Tags { get; set; }
 
         // store this as a json document
         //[DynamoDBProperty(Converter = typeof(AddressConverter))]
