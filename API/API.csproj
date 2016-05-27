@@ -114,22 +114,19 @@
     <Compile Include="Config\Constants.cs" />
     <Compile Include="Config\Context.cs" />
     <Compile Include="Config\CorsPolicyProvider.cs" />
+    <Compile Include="Config\DynamoDbHelper.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
-    <Compile Include="Data\DynamoDb\DynamoDbTable.cs" />
     <Compile Include="Config\IContext.cs" />
-    <Compile Include="Data\DynamoDb\Samples\DataModelSample.cs" />
-    <Compile Include="Data\DynamoDb\Samples\DataModelSchema.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Data\IReviewData.cs" />
     <Compile Include="Model\App.cs" />
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Review.cs" />
-    <Compile Include="Data\ReviewData.cs" />
+    <Compile Include="Data\ReviewTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

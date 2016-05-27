@@ -1,5 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Configuration;
+using System.Reflection;
 using System.Web.Http;
+using Amazon;
+using Amazon.DynamoDBv2;
 using API.Config;
 using API.Data;
 using Autofac;
@@ -21,12 +25,16 @@ namespace API
             // OPTIONAL: Register the Autofac filter provider
             builder.RegisterWebApiFilterProvider(config);
 
-            builder.RegisterType<ReviewData>().As<IReviewData>();
             builder.RegisterType<Context>().As<IContext>().SingleInstance();
+
+            builder.Register(c => new AmazonDynamoDBClient(DynamoDbHelper.ConfigureDynamoDb())).SingleInstance();
+
+            builder.RegisterType<ReviewTable>().AsSelf();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
+ 
     }
 }

@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using Amazon;
+using Amazon.DynamoDBv2;
+using API.Config;
 using API.Data;
 using API.Model;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 
 namespace API.Tests
@@ -46,26 +51,20 @@ namespace API.Tests
 
         //return list;
 
+        private static AmazonDynamoDBClient _dbClient = new AmazonDynamoDBClient(DynamoDbHelper.ConfigureDynamoDb());
+
         [Test]
         public void TestSaveItem()
         {
-           
-            var db = new ReviewData();
-            //var result = db.GetReviews();
-            //result.Should().BeEmpty();
-            //Book myBook = new Book
-            //{
-            //    Id = 501,
-            //    Title = "AWS SDK for .NET Object Persistence Model Handling Arbitrary Data",
-            //    ISBN = "999-9999999999",
-            //    BookAuthors = new List<string> { "Author 1", "Author 2" },
-            //    Dimensions = myBookDimensions
-            //};
 
+            var context = new Mock<IContext>();
+            context.Setup(c => c.Environment).Returns("LOCAL");
+
+            var db = new ReviewTable(_dbClient, context.Object);
             var review = new Review
             {
                 Id = Guid.NewGuid(),
-                Category = Category.App,
+                Category = Category.Book,
                 Author = "Some guy on the internet",
                 Text = "Short inconsistent rant on something entirely different",
                 //Tenant = "Site1",
@@ -79,15 +78,17 @@ namespace API.Tests
                 Tags = new List<string>() { "Science-Ficton", "Economics" }
 
             };
-
             db.CreateReview(review);
-
         }
 
         [Test]
         public void TestGetItems()
         {
-            var db = new ReviewData();
+            var context = new Mock<IContext>();
+            context.Setup(c => c.Environment).Returns("LOCAL");
+
+            var db = new ReviewTable(_dbClient, context.Object);
+
             var result = db.GetReviews().ToList();
             result.Should().NotBeEmpty();
 
@@ -104,11 +105,15 @@ namespace API.Tests
         [Test]
         public void TestGetItemsByCategory()
         {
-            var db = new ReviewData();
+            var context = new Mock<IContext>();
+            context.Setup(c => c.Environment).Returns("LOCAL");
+
+            var db = new ReviewTable(_dbClient, context.Object);
+
             var result = db.GetReviewsByCategory(Category.Book).ToList();
             result.Should().NotBeEmpty();
 
-            var itemToFetch = result.First();
+            var itemToFetch = result.FirstOrDefault(i => i.Category.Equals(Category.Book));
 
             var theFetchedItem = db.GetReview(itemToFetch.Category, itemToFetch.Id);
             theFetchedItem.Should().NotBeNull();

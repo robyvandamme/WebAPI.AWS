@@ -246,3 +246,9 @@ ModelManifest.xml
 
 # local config
 app.config.local
+
+
+# Ignore Elastic Beanstalk Files for now
+
+.elasticbeanstalk/
+.ebextensions/

@@ -16,10 +16,46 @@ namespace API.Tests
     [TestFixture]
     public class ReviewsEndpointTest
     {
-        
+ 
         [Test]
         public void TestPost()
         {
+
+            //var list = new List<Review>();
+            //var book = new Review
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Category = Category.Book, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
+            //    Tenant = "Site1",
+            //    Book = new Book()
+            //    {
+            //        Author = "William Gibson",
+            //        Title = "Pattern Recognition",
+            //        Genre = "Science-Fiction?",
+            //        Url = "http://amazon.com",
+            //    },
+            //    Tags = new List<string>() { "Science-Ficton,", "Branding" }
+
+            //};
+            //list.Add(book);
+
+            //var app = new Review()
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Category = Category.App,
+            //    Tenant = "Site1",
+            //    App = new App()
+            //    {
+            //        Name = "Pluralsight",
+            //        Url = "http://pluralsight.com",
+
+            //    },
+            //    Tags = new List<string>() { "Learning" }
+            //};
+            //list.Add(app);
+
+            //return list;
+
             var bookReview = new Review()
             {
                 Id = Guid.NewGuid(),
