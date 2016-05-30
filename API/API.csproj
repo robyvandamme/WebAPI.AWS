@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Model\App.cs" />
     <Compile Include="Model\Book.cs" />
+    <Compile Include="Model\JsonConverter.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Review.cs" />

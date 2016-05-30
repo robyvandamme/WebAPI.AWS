@@ -68,13 +68,13 @@ namespace API.Tests
                 Author = "Some guy on the internet",
                 Text = "Short inconsistent rant on something entirely different",
                 //Tenant = "Site1",
-                //Book = new Book()
-                //{
-                //    Author = "William Gibson",
-                //    Title = "Pattern Recognition",
-                //    Genre = "Science-Fiction?",
-                //    Url = "http://amazon.com",
-                //},
+                Book = new Book()
+                {
+                    Author = "William Gibson",
+                    Title = "Pattern Recognition",
+                    Genre = "Science-Fiction?",
+                    Url = "http://amazon.com",
+                },
                 Tags = new List<string>() { "Science-Ficton", "Economics" }
 
             };

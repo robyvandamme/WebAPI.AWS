@@ -12,29 +12,29 @@ namespace API.Controllers
 {
     public class ReviewsController : ApiController
     {
-        private readonly ReviewTable _reviewData;
+        private readonly ReviewTable _reviewTable;
 
-        public ReviewsController(ReviewTable reviewData)
+        public ReviewsController(ReviewTable reviewTable)
         {
-            _reviewData = reviewData;
+            _reviewTable = reviewTable;
         }
 
         public IEnumerable<Review> Get()
         {
-            var reviews = _reviewData.GetReviews();
+            var reviews = _reviewTable.GetReviews();
             return reviews;
         }
 
         public Review Get(Category category, Guid id) // or do we need to use a string here and cast?
         {
-            var review = _reviewData.GetReview(category, id);
+            var review = _reviewTable.GetReview(category, id);
             return review;
         }
 
         // POST: api/Reviews
         public HttpResponseMessage Post(Review review)
         {
-            _reviewData.CreateReview(review);
+            _reviewTable.CreateReview(review);
             //Debug.Write(review);
             //TODO: return something here, like the id or a link to the created/ updated resource.
             return new HttpResponseMessage(HttpStatusCode.OK);

@@ -20,21 +20,17 @@ namespace API.Model
         [DynamoDBRangeKey]
         public Guid Id { get; set; }
 
-        // Do we store this in Dynamo or on S3 as Json? (figure out the size limitations and the impact on the read and write operations) 
+        // TODO: Do we store this in Dynamo or on S3 as Json? (figure out the size limitations and the impact on the read and write operations) 
         public string Text { get; set; }
 
         public string Author { get; set; }
 
-        //[DynamoDBProperty()]
         public List<string> Tags { get; set; }
 
-        // store this as a json document
-        //[DynamoDBProperty(Converter = typeof(AddressConverter))]
-        [DynamoDBIgnore]
+        [DynamoDBProperty(Converter = typeof(JsonConverter<Book>))]
         public Book Book { get; set; }
 
-        // store this as a json document
-        [DynamoDBIgnore]
+        [DynamoDBProperty(Converter = typeof(JsonConverter<App>))]
         public App App { get; set; }
 
         //public string Tenant { get; set; } //  TODO: map this to some form of authentication, not important for now
