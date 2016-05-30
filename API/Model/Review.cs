@@ -35,7 +35,6 @@ namespace API.Model
 
         //public string Tenant { get; set; } //  TODO: map this to some form of authentication, not important for now
 
-        // TODO: autoincrement number (should be possible in dynamo)
         public int Likes { get; set; }
 
         // TODO: add an image for the review in S3

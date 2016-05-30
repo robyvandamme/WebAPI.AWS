@@ -78,7 +78,7 @@ namespace API.Tests
                 Tags = new List<string>() { "Science-Ficton", "Economics" }
 
             };
-            db.CreateReview(review);
+            db.SaveReview(review);
         }
 
         [Test]
@@ -99,6 +99,33 @@ namespace API.Tests
 
             var anotherItemToFecth = db.GetReview(Category.App, Guid.NewGuid());
             anotherItemToFecth.Should().BeNull();
+
+        }
+
+        [Test]
+        public void TestLikeItem()
+        {
+            var context = new Mock<IContext>();
+            context.Setup(c => c.Environment).Returns("LOCAL");
+
+            var db = new ReviewTable(_dbClient, context.Object);
+
+            var result = db.GetReviews().ToList();
+            result.Should().NotBeEmpty();
+
+            var itemToFetch = result.First();
+
+            var theFetchedItem = db.GetReview(itemToFetch.Category, itemToFetch.Id);
+            theFetchedItem.Should().NotBeNull();
+
+            var likes = theFetchedItem.Likes;
+            db.LikeReview(theFetchedItem.Category, theFetchedItem.Id);
+            // TODO: return the new number of likes?
+
+            // may not be updated immediatley of course, but let's see...
+            var theLikedItem = db.GetReview(itemToFetch.Category, itemToFetch.Id);
+            theLikedItem.Should().NotBeNull();
+            theLikedItem.Likes.Should().BeGreaterThan(likes);
 
         }
 

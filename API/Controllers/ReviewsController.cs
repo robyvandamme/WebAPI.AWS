@@ -34,7 +34,7 @@ namespace API.Controllers
         // POST: api/Reviews
         public HttpResponseMessage Post(Review review)
         {
-            _reviewTable.CreateReview(review);
+            _reviewTable.SaveReview(review);
             //Debug.Write(review);
             //TODO: return something here, like the id or a link to the created/ updated resource.
             return new HttpResponseMessage(HttpStatusCode.OK);
