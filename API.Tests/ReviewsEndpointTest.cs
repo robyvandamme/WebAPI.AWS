@@ -15,53 +15,14 @@ namespace API.Tests
 {
     [TestFixture]
     public class ReviewsEndpointTest
-    {
- 
+    { 
         [Test]
-        public void TestPost()
+        public void Post_Book_Review()
         {
-
-            //var list = new List<Review>();
-            //var book = new Review
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Category = Category.Book, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
-            //    Tenant = "Site1",
-            //    Book = new Book()
-            //    {
-            //        Author = "William Gibson",
-            //        Title = "Pattern Recognition",
-            //        Genre = "Science-Fiction?",
-            //        Url = "http://amazon.com",
-            //    },
-            //    Tags = new List<string>() { "Science-Ficton,", "Branding" }
-
-            //};
-            //list.Add(book);
-
-            //var app = new Review()
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Category = Category.App,
-            //    Tenant = "Site1",
-            //    App = new App()
-            //    {
-            //        Name = "Pluralsight",
-            //        Url = "http://pluralsight.com",
-
-            //    },
-            //    Tags = new List<string>() { "Learning" }
-            //};
-            //list.Add(app);
-
-            //return list;
-
             var bookReview = new Review()
-            {
-                Id = Guid.NewGuid(),
-                Category = Category.Book,
-                //Tenant = "Site1",
-                Author = "Someone on the internet", 
+            { 
+                Author = "Someone on the internet",
+                Text = "The first of William Gibson\'s usually futuristic novels to be set in the present, Pattern Recognition is a masterful snapshot of modern consumer culture and hipster esoterica. Set in London, Tokyo, and Moscow, Pattern Recognition takes the reader on a tour of a global village inhabited by power-hungry marketeers, industrial saboteurs, high-end hackers, Russian mob bosses, Internet fan-boys, techno archeologists, washed-out spies, cultural documentarians, and our heroine Cayce Pollard--a soothsaying \"cool hunter\" with an allergy to brand names.",
                 Tags = new List<string>() { "Science-Ficton,", "Branding" },
                 Book = new Book()
                 {
@@ -76,7 +37,7 @@ namespace API.Tests
             var body = JsonConvert.SerializeObject(bookReview);
             var content = new StringContent(body, Encoding.UTF8, "application/json");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = client.PostAsync("http://localhost/api/reviews", content);
+            var response = client.PostAsync("http://localhost/api/reviews/books/", content);
             var result = response.Result.StatusCode;
             
             Assert.AreEqual(HttpStatusCode.OK, result);

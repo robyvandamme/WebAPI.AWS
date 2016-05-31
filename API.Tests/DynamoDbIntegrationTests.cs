@@ -20,9 +20,9 @@ namespace API.Tests
         //var book = new Review
         //{
         //    Id = Guid.NewGuid(),
-        //    Category = Category.Book, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
+        //    Category = Category.Books, // do we need the subject? if the review includes a book it is a book review, if it includes an app it is an app review...
         //    //Tenant = "Site1",
-        //    Book = new Book()
+        //    Books = new Books()
         //    {
         //        Author = "William Gibson",
         //        Title = "Pattern Recognition",
@@ -37,9 +37,9 @@ namespace API.Tests
         //var app = new Review()
         //{
         //    Id = Guid.NewGuid(),
-        //    Category = Category.App,
+        //    Category = Category.Apps,
         //    //Tenant = "Site1",
-        //    App = new App()
+        //    Apps = new Apps()
         //    {
         //        Name = "Pluralsight",
         //        Url = "http://pluralsight.com",
@@ -64,19 +64,17 @@ namespace API.Tests
             var review = new Review
             {
                 Id = Guid.NewGuid(),
-                Category = Category.Book,
+                Category = Category.Books,
                 Author = "Some guy on the internet",
-                Text = "Short inconsistent rant on something entirely different",
-                //Tenant = "Site1",
+                Text = "The first of William Gibson\'s usually futuristic novels to be set in the present, Pattern Recognition is a masterful snapshot of modern consumer culture and hipster esoterica. Set in London, Tokyo, and Moscow, Pattern Recognition takes the reader on a tour of a global village inhabited by power-hungry marketeers, industrial saboteurs, high-end hackers, Russian mob bosses, Internet fan-boys, techno archeologists, washed-out spies, cultural documentarians, and our heroine Cayce Pollard--a soothsaying \"cool hunter\" with an allergy to brand names.",
                 Book = new Book()
                 {
                     Author = "William Gibson",
                     Title = "Pattern Recognition",
-                    Genre = "Science-Fiction?",
+                    Genre = "Science-Fiction",
                     Url = "http://amazon.com",
                 },
-                Tags = new List<string>() { "Science-Ficton", "Economics" }
-
+                Tags = new List<string>() { "Science-Ficton", "Branding" }
             };
             db.SaveReview(review);
         }
@@ -97,7 +95,7 @@ namespace API.Tests
             var theFetchedItem = db.GetReview(itemToFetch.Category, itemToFetch.Id);
             theFetchedItem.Should().NotBeNull();
 
-            var anotherItemToFecth = db.GetReview(Category.App, Guid.NewGuid());
+            var anotherItemToFecth = db.GetReview(Category.Apps, Guid.NewGuid());
             anotherItemToFecth.Should().BeNull();
 
         }
@@ -137,15 +135,15 @@ namespace API.Tests
 
             var db = new ReviewTable(_dbClient, context.Object);
 
-            var result = db.GetReviewsByCategory(Category.Book).ToList();
+            var result = db.GetReviewsByCategory(Category.Books).ToList();
             result.Should().NotBeEmpty();
 
-            var itemToFetch = result.FirstOrDefault(i => i.Category.Equals(Category.Book));
+            var itemToFetch = result.FirstOrDefault(i => i.Category.Equals(Category.Books));
 
             var theFetchedItem = db.GetReview(itemToFetch.Category, itemToFetch.Id);
             theFetchedItem.Should().NotBeNull();
 
-            var anotherItemToFecth = db.GetReview(Category.App, itemToFetch.Id);
+            var anotherItemToFecth = db.GetReview(Category.Apps, itemToFetch.Id);
             anotherItemToFecth.Should().BeNull();
 
         }

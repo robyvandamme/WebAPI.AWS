@@ -15,7 +15,6 @@ namespace API.Data
         private readonly DynamoDBOperationConfig _dbOperationConfig;
         private readonly string _tableName;
 
-
         public ReviewTable(AmazonDynamoDBClient dbClient, IContext context)
         {
             _dbClient = dbClient;
@@ -42,7 +41,7 @@ namespace API.Data
             IEnumerable<Review> reviews;
             using (var context = new DynamoDBContext(_dbClient, _dbOperationConfig))
             {
-                reviews = context.Scan<Review>();
+                reviews = context.Query<Review>(category);
             }
             return reviews;
         }
@@ -97,6 +96,14 @@ namespace API.Data
             // do we need something from the response? maybe the new amount of likes?
             var response = _dbClient.UpdateItem(updateItemRequest);
 
+        }
+
+        public void DeleteReview(Category category, Guid id)
+        {
+            using (var context = new DynamoDBContext(_dbClient, _dbOperationConfig))
+            {
+                context.Delete<Review>(category, id);
+            }
         }
     }
 }
