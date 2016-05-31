@@ -128,7 +128,7 @@ namespace API.Tests
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var request = client.GetAsync("http://localhost/api/reviews/unpsecified");
+            var request = client.GetAsync("http://localhost/api/reviews/unspecified");
             var response = request.Result;
 
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
