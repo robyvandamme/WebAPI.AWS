@@ -7,4 +7,12 @@ namespace API.Model
         Apps,
         Sites
     }
+
+    public static class CategoryExtensions
+    {
+        public static bool IsSpecified(this Category category)
+        {
+            return category != Category.Unspecified;
+        }
+    }
 }

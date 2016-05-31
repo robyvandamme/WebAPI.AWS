@@ -21,18 +21,17 @@ namespace API.Controllers
         public HttpResponseMessage Get()
         {
             // TODO: we should probably try and filter at the query
-            var reviews = _reviewTable.GetReviews().Where(o => o.Category != Category.Unspecified);
+            var reviews = _reviewTable.GetReviews().Where(o => o.Category.IsSpecified());
             return Request.CreateResponse(HttpStatusCode.OK, reviews);
         }
 
         [Route("reviews/{category}")]
         public HttpResponseMessage Get(string category)
         {
-            Category categoryEnum;
-            bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            if (categoryExists && categoryEnum != Category.Unspecified)
+            var theCategory = ParseCategory(category);
+            if (theCategory.IsSpecified())
             {
-                var reviews = _reviewTable.GetReviewsByCategory(categoryEnum);
+                var reviews = _reviewTable.GetReviewsByCategory(theCategory);
                 return Request.CreateResponse(HttpStatusCode.OK, reviews);
             }
             return new HttpResponseMessage(HttpStatusCode.NotFound);
@@ -41,12 +40,11 @@ namespace API.Controllers
         [Route("reviews/{category}/{id}")]
         public HttpResponseMessage Get(string category, Guid id)
         {
-            Category categoryEnum;
-            bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            if (categoryExists && categoryEnum != Category.Unspecified)
+            var theCategory = ParseCategory(category);
+            if (theCategory.IsSpecified())
             {
                 // todo: exception handling on GetReview
-                var review = _reviewTable.GetReview(categoryEnum, id);
+                var review = _reviewTable.GetReview(theCategory, id);
                 return Request.CreateResponse(HttpStatusCode.OK, review);
             }
             return new HttpResponseMessage(HttpStatusCode.NotFound);
@@ -60,19 +58,16 @@ namespace API.Controllers
             // use that category, even if the category in the review is a different one? we overwrite it? NOPE, return a error: you cannot post app reviews to the books endpoint etc...
             // check if an id is present, 
             // if the id exists we refuse the creation? Nope, it's a post, we create a new review with a new Id
-            Category categoryEnum;
-            bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            if (categoryExists)
+
+            var theCategory = ParseCategory(category);
+            if(theCategory.IsSpecified())
             {
                 // we do want to accept unspecified categories of course
-                if (review.Category != categoryEnum && review.Category != Category.Unspecified)
+                if (review.Category != theCategory && review.Category.IsSpecified())
                 {
-                    var response = new HttpResponseMessage();
-                    response.StatusCode = (HttpStatusCode)422;
-                    // TODO: add someting meaningfull as content here
-                    return response;
+                    return CreateValidationErrorResponse();
                 }
-                review.Category = categoryEnum;
+                review.Category = theCategory;
                 review.Id = Guid.NewGuid();
                 _reviewTable.SaveReview(review);
                 return Request.CreateResponse(HttpStatusCode.OK, review);
@@ -83,29 +78,16 @@ namespace API.Controllers
         [Route("reviews/{category}/{id}")]
         public HttpResponseMessage Put(string category, Guid id, Review review)
         {
-            Category categoryEnum;
-            bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            if (categoryExists && id != Guid.Empty)
+            var theCategory = ParseCategory(category);
+            if (theCategory.IsSpecified() && id != Guid.Empty)
             {
-                if (review.Category != categoryEnum && review.Category != Category.Unspecified)
+                UpateEmptyReviewParameters(review, theCategory, id);
+
+                if (review.Category != theCategory || review.Id != id)
                 {
-                    var response = new HttpResponseMessage();
-                    response.StatusCode = (HttpStatusCode)422;
-                    // TODO: add something meaningful as content here
-                    return response;
+                    return CreateValidationErrorResponse();
                 }
-                if (review.Id == Guid.Empty)
-                {
-                    review.Id = id;
-                }
-                if (review.Category == Category.Unspecified)
-                {
-                    review.Category = categoryEnum;
-                }
-                if (!review.Id.Equals(id))
-                {
-                    return new HttpResponseMessage((HttpStatusCode)422);
-                }
+
                 _reviewTable.SaveReview(review);
                 Request.CreateResponse(HttpStatusCode.OK, review);
             } 
@@ -115,15 +97,39 @@ namespace API.Controllers
         [Route("reviews/{category}/{id}")]
         public HttpResponseMessage Delete(string category, Guid id)
         {
-            Category categoryEnum;
-            bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            if (categoryExists)
+            var theCategory = ParseCategory(category);
+            if (theCategory.IsSpecified())
             {
-                _reviewTable.DeleteReview(categoryEnum, id);
+                _reviewTable.DeleteReview(theCategory, id);
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             return new HttpResponseMessage(HttpStatusCode.NotFound);
+        }
 
+        private static void UpateEmptyReviewParameters(Review review, Category category, Guid id)
+        {
+            if (review.Id == Guid.Empty)
+            {
+                review.Id = id;
+            }
+            if (review.Category == Category.Unspecified)
+            {
+                review.Category = category;
+            }
+        }
+
+        // needs an input param for the content..., turn into an extension method?
+        private HttpResponseMessage CreateValidationErrorResponse()
+        {
+            // TODO: add someting meaningful as content 
+            return Request.CreateErrorResponse((HttpStatusCode) 422, String.Empty);
+        }
+
+        private static Category ParseCategory(string category)
+        {
+            Category categoryEnum;
+            Enum.TryParse(category, true, out categoryEnum);
+            return categoryEnum;
         }
     }
 }
