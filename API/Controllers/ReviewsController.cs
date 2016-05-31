@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -19,16 +20,18 @@ namespace API.Controllers
         [Route("reviews")]
         public HttpResponseMessage Get()
         {
-            var reviews = _reviewTable.GetReviews();
+            // TODO: do we return unspecified category? we should probably try and filter at the query
+            var reviews = _reviewTable.GetReviews().Where(o => o.Category != Category.Unspecified);
             return Request.CreateResponse(HttpStatusCode.OK, reviews);
         }
 
         [Route("reviews/{category}")]
         public HttpResponseMessage Get(string category)
         {
+            // TODO: do we return unspecified category?
             Category categoryEnum;
             bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            if (categoryExists)
+            if (categoryExists && categoryEnum != Category.Unspecified)
             {
                 var reviews = _reviewTable.GetReviewsByCategory(categoryEnum);
                 return Request.CreateResponse(HttpStatusCode.OK, reviews);
@@ -42,7 +45,8 @@ namespace API.Controllers
         {
             Category categoryEnum;
             bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            if (categoryExists)
+            // TODO: do we return unspecified category?
+            if (categoryExists && categoryEnum != Category.Unspecified)
             {
                 // todo: exception handling on GetReview
                 var review = _reviewTable.GetReview(categoryEnum, id);
@@ -63,7 +67,8 @@ namespace API.Controllers
             bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
             if (categoryExists)
             {
-                if (review.Category != categoryEnum)
+                // we do want to accept unspecified categories of course
+                if (review.Category != categoryEnum && review.Category != Category.Unspecified)
                 {
                     var response = new HttpResponseMessage();
                     response.StatusCode = (HttpStatusCode)422;
@@ -85,16 +90,20 @@ namespace API.Controllers
             bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
             if (categoryExists && id != Guid.Empty)
             {
-                if (review.Category != categoryEnum)
+                if (review.Category != categoryEnum && review.Category != Category.Unspecified)
                 {
                     var response = new HttpResponseMessage();
                     response.StatusCode = (HttpStatusCode)422;
-                    // TODO: add something meaningfull as content here
+                    // TODO: add something meaningful as content here
                     return response;
                 }
                 if (review.Id == Guid.Empty)
                 {
                     review.Id = id;
+                }
+                if (review.Category == Category.Unspecified)
+                {
+                    review.Category = categoryEnum;
                 }
                 if (!review.Id.Equals(id))
                 {
