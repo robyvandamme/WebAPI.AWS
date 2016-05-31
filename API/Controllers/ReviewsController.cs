@@ -20,7 +20,7 @@ namespace API.Controllers
         [Route("reviews")]
         public HttpResponseMessage Get()
         {
-            // TODO: do we return unspecified category? we should probably try and filter at the query
+            // TODO: we should probably try and filter at the query
             var reviews = _reviewTable.GetReviews().Where(o => o.Category != Category.Unspecified);
             return Request.CreateResponse(HttpStatusCode.OK, reviews);
         }
@@ -28,7 +28,6 @@ namespace API.Controllers
         [Route("reviews/{category}")]
         public HttpResponseMessage Get(string category)
         {
-            // TODO: do we return unspecified category?
             Category categoryEnum;
             bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
             if (categoryExists && categoryEnum != Category.Unspecified)
@@ -39,13 +38,11 @@ namespace API.Controllers
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
-        [Route("reviews")]
         [Route("reviews/{category}/{id}")]
         public HttpResponseMessage Get(string category, Guid id)
         {
             Category categoryEnum;
             bool categoryExists = Enum.TryParse(category, true, out categoryEnum);
-            // TODO: do we return unspecified category?
             if (categoryExists && categoryEnum != Category.Unspecified)
             {
                 // todo: exception handling on GetReview
