@@ -132,6 +132,7 @@
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Config\IContext.cs" />
+    <Compile Include="Model\ValidationError.cs" />
     <Compile Include="Filters\GlobalExceptionFilter.cs" />
     <Compile Include="Filters\IntegrationTestFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -141,6 +142,7 @@
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\JsonConverter.cs" />
     <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\ValidationErrorResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Review.cs" />
     <Compile Include="Data\ReviewTable.cs" />

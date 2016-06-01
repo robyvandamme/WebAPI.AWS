@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using API.Data;
 using API.Model;
+using Swashbuckle.Swagger.Annotations;
 
 namespace API.Controllers
 {
+    [SwaggerResponse(HttpStatusCode.InternalServerError)]
     public class ReviewsController : ApiController
     {
         private readonly ReviewTable _reviewTable;
@@ -17,6 +20,7 @@ namespace API.Controllers
             _reviewTable = reviewTable;
         }
 
+        [SwaggerResponse(HttpStatusCode.OK, "",typeof(IEnumerable<Review>))]
         [Route("reviews")]
         public HttpResponseMessage Get()
         {
@@ -25,6 +29,8 @@ namespace API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, reviews);
         }
 
+        [SwaggerResponse(HttpStatusCode.OK, "", typeof(IEnumerable<Review>))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("reviews/{category}")]
         public HttpResponseMessage Get(string category)
         {
@@ -37,6 +43,8 @@ namespace API.Controllers
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
+        [SwaggerResponse(HttpStatusCode.OK, "", typeof(Review))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("reviews/{category}/{id}")]
         public HttpResponseMessage Get(string category, Guid id)
         {
@@ -50,7 +58,9 @@ namespace API.Controllers
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
-        [Route("reviews")]
+        [SwaggerResponse(HttpStatusCode.OK, "", typeof(Review))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse((HttpStatusCode)422, "ValidationError", typeof(ValidationErrorResponse))]
         [Route("reviews/{category}")]
         public HttpResponseMessage Post(string category, Review review)
         {
@@ -75,6 +85,9 @@ namespace API.Controllers
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
+        [SwaggerResponse(HttpStatusCode.OK, "", typeof(Review))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse((HttpStatusCode)422, "ValidationError", typeof(ValidationErrorResponse))]
         [Route("reviews/{category}/{id}")]
         public HttpResponseMessage Put(string category, Guid id, Review review)
         {
@@ -94,6 +107,8 @@ namespace API.Controllers
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("reviews/{category}/{id}")]
         public HttpResponseMessage Delete(string category, Guid id)
         {
@@ -105,6 +120,8 @@ namespace API.Controllers
             }
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
+
+
 
         private static void UpateEmptyReviewParameters(Review review, Category category, Guid id)
         {

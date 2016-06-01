@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using API.Config;
 using API.Model;
@@ -31,7 +32,18 @@ namespace API.Data
             IEnumerable<Review> reviews;
             using (var context = new DynamoDBContext(_dbClient, _dbOperationConfig))
             {
-                reviews = context.Scan<Review>();
+                //try
+                //{
+                    reviews = context.Scan<Review>();
+                    //var query = new QueryOperationConfig();
+                    //query.
+                    //reviews = context.FromQuery<Review>()
+
+                //}
+                //catch (AmazonDynamoDBException dbException)
+                //{
+
+                //}   
             }
             return reviews;
         }

@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace API.Tests
 {
     [TestFixture]
-    public class ReviewsEndpointTest
+    public class ReviewsEndpointTests
     {
         [Test]
         public void Can_Post_BookReview()
