@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
-using API.Logging;
 using Autofac.Integration.WebApi;
+using Serilog;
 
 namespace API.Filters
 {
@@ -17,7 +17,7 @@ namespace API.Filters
 
         public void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            _logger.LogUnhandledException(actionExecutedContext.Exception);
+            _logger.Error(actionExecutedContext.Exception, "Unhandled exception");
             actionExecutedContext.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
         }
     }

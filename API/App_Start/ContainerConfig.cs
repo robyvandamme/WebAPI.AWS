@@ -1,16 +1,14 @@
-﻿using System;
-using System.Configuration;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Web.Http;
-using Amazon;
 using Amazon.DynamoDBv2;
 using API.Config;
 using API.Controllers;
 using API.Data;
 using API.Filters;
-using API.Logging;
 using Autofac;
 using Autofac.Integration.WebApi;
+using AutofacSerilogIntegration;
+using Serilog;
 
 namespace API
 {
@@ -33,13 +31,16 @@ namespace API
 
             builder.RegisterType<ReviewTable>().AsSelf();
 
-            builder.RegisterType<Logger>().As<ILogger>().SingleInstance();
+            // TODO: configure different sink for deployment
+            Log.Logger = new LoggerConfiguration().WriteTo.Trace().CreateLogger();
 
             builder.Register(c => new GlobalExceptionFilter(c.Resolve<ILogger>()))
                 .AsWebApiExceptionFilterFor<ApiController>().SingleInstance(); // should this be single instance, that is the default in web api...?
 
             builder.Register(c => new IntegrationTestFilter())
-               .AsWebApiActionFilterFor<TestController>().SingleInstance(); 
+               .AsWebApiActionFilterFor<TestController>().SingleInstance();
+
+            builder.RegisterLogger();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
