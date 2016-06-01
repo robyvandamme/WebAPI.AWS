@@ -8,6 +8,7 @@ using API.Config;
 using API.Controllers;
 using API.Data;
 using API.Filters;
+using API.Logging;
 using Autofac;
 using Autofac.Integration.WebApi;
 
@@ -22,9 +23,8 @@ namespace API
             // Get your HttpConfiguration.
             var config = GlobalConfiguration.Configuration;
 
-            // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            // OPTIONAL: Register the Autofac filter provider
+
             builder.RegisterWebApiFilterProvider(config);
 
             builder.RegisterType<Context>().As<IContext>().SingleInstance();
@@ -33,7 +33,9 @@ namespace API
 
             builder.RegisterType<ReviewTable>().AsSelf();
 
-            builder.Register(c => new GlobalExceptionFilter())
+            builder.RegisterType<Logger>().As<ILogger>().SingleInstance();
+
+            builder.Register(c => new GlobalExceptionFilter(c.Resolve<ILogger>()))
                 .AsWebApiExceptionFilterFor<ApiController>().SingleInstance(); // should this be single instance, that is the default in web api...?
 
             builder.Register(c => new IntegrationTestFilter())

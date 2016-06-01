@@ -132,6 +132,7 @@
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Config\IContext.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Model\ValidationError.cs" />
     <Compile Include="Filters\GlobalExceptionFilter.cs" />
     <Compile Include="Filters\IntegrationTestFilter.cs" />
