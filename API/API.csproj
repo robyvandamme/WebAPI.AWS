@@ -128,9 +128,12 @@
     <Compile Include="Config\Context.cs" />
     <Compile Include="Config\CorsPolicyProvider.cs" />
     <Compile Include="Config\DynamoDbHelper.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Config\IContext.cs" />
+    <Compile Include="Filters\GlobalExceptionFilter.cs" />
+    <Compile Include="Filters\IntegrationTestFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
