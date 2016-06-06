@@ -10,7 +10,7 @@ namespace API.Config
         public static AmazonDynamoDBConfig ConfigureDynamoDb()
         {
             var config = new AmazonDynamoDBConfig();
-            config.RegionEndpoint = RegionEndpoint.GetBySystemName(ConfigurationManager.AppSettings.Get("AWS:RegionEndpoint"));
+            config.RegionEndpoint = RegionEndpoint.GetBySystemName(ConfigurationManager.AppSettings.Get("AWSRegion"));
             var environment = ConfigurationManager.AppSettings.Get("Context:Environment");
             if (environment.Equals(Constants.Environments.Local, StringComparison.OrdinalIgnoreCase))
             {

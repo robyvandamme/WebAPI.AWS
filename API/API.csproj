@@ -80,6 +80,10 @@
       <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Serilog.Sinks.DynamoDB, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.DynamoDB.0.2.12\lib\net45\Serilog.Sinks.DynamoDB.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
       <HintPath>..\packages\Swashbuckle.Core.5.3.2\lib\net40\Swashbuckle.Core.dll</HintPath>
       <Private>True</Private>
@@ -144,6 +148,7 @@
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Config\IContext.cs" />
+    <Compile Include="Filters\RequestLogFilter.cs" />
     <Compile Include="Model\ValidationError.cs" />
     <Compile Include="Filters\GlobalExceptionFilter.cs" />
     <Compile Include="Filters\IntegrationTestFilter.cs" />

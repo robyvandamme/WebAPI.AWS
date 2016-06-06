@@ -9,6 +9,7 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using AutofacSerilogIntegration;
 using Serilog;
+using Serilog.Events;
 
 namespace API
 {
@@ -31,14 +32,21 @@ namespace API
 
             builder.RegisterType<ReviewTable>().AsSelf();
 
-            // TODO: configure different sink for deployment
-            Log.Logger = new LoggerConfiguration().WriteTo.Trace().CreateLogger();
+            // TODO: configure different sinks for information and error and stuff in between
+            Log.Logger = new LoggerConfiguration()
+                //.WriteTo.DynamoDB("Local-Log") // TODO: how do we configure this for local and different envs?
+                .WriteTo.Trace()
+                .MinimumLevel.Debug()
+                .CreateLogger();
 
             builder.Register(c => new GlobalExceptionFilter(c.Resolve<ILogger>()))
                 .AsWebApiExceptionFilterFor<ApiController>().SingleInstance(); // should this be single instance, that is the default in web api...?
 
             builder.Register(c => new IntegrationTestFilter())
                .AsWebApiActionFilterFor<TestController>().SingleInstance();
+
+            builder.Register(c => new RequestLogFilter(c.Resolve<ILogger>()))
+             .AsWebApiActionFilterFor<ApiController>().SingleInstance(); // single instance or not?
 
             builder.RegisterLogger();
 

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
 using Autofac.Integration.WebApi;
@@ -9,6 +10,7 @@ namespace API.Filters
     public class GlobalExceptionFilter : IAutofacExceptionFilter
     {
         private readonly ILogger _logger;
+        private static readonly string Machine = Environment.MachineName;
 
         public GlobalExceptionFilter(ILogger logger)
         {
@@ -17,7 +19,10 @@ namespace API.Filters
 
         public void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            _logger.Error(actionExecutedContext.Exception, "Unhandled exception");
+            var args = actionExecutedContext.ActionContext.ActionArguments;
+            var controller = actionExecutedContext.ActionContext.ControllerContext.Controller.GetType().Name;
+            var method = actionExecutedContext.ActionContext.ActionDescriptor.ActionName;
+            _logger.Error(actionExecutedContext.Exception, "UnhandledException: {Machine} | {Controller} | {Method} | {Args}", Machine, controller, method, args);
             actionExecutedContext.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
         }
     }
