@@ -3,7 +3,7 @@ using WebActivatorEx;
 using API;
 using Swashbuckle.Application;
 
-[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
+//[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
 namespace API
 {

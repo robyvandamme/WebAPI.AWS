@@ -6,6 +6,7 @@ using API.Controllers;
 using API.Data;
 using API.Filters;
 using Autofac;
+using Autofac.Core;
 using Autofac.Integration.WebApi;
 using AutofacSerilogIntegration;
 using Serilog;
@@ -15,7 +16,8 @@ namespace API
 {
     public static class ContainerConfig
     {
-        internal static void Configure()
+
+        internal static IContainer ConfigureContainer()
         {
             var builder = new ContainerBuilder();
 
@@ -52,7 +54,9 @@ namespace API
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            return container;
+
+            //config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
  
     }
