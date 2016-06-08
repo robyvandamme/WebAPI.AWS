@@ -1,3 +1,5 @@
+using System;
+using System.Configuration;
 using System.Web.Http;
 using WebActivatorEx;
 using API;
@@ -9,18 +11,18 @@ namespace API
 {
     public class SwaggerConfig
     {
-        public static void Register()
+        public static void Register(HttpConfiguration config)
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
 
-            GlobalConfiguration.Configuration 
-                .EnableSwagger(c =>
+            config.EnableSwagger(c =>
                     {
+
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
                         // resolve correctly. You can workaround this by providing your own code to determine the root URL.
-                        //
-                        //c.RootUrl(req => GetRootUrlFromAppConfig());
+                        
+                        c.RootUrl(req => GetRootUrlFromAppConfig());
 
                         // If schemes are not explicitly provided in a Swagger 2.0 document, then the scheme used to access
                         // the docs is taken as the default. If your API supports multiple schemes and you want to be explicit
@@ -174,6 +176,7 @@ namespace API
                     })
                 .EnableSwaggerUi(c =>
                     {
+ 
                         // Use the "InjectStylesheet" option to enrich the UI with one or more additional CSS stylesheets.
                         // The file must be included in your project as an "Embedded Resource", and then the resource's
                         // "Logical Name" is passed to the method as shown below.
@@ -223,7 +226,18 @@ namespace API
                         // the Swagger 2.0 specification, you can enable UI support as shown below.
                         //
                         //c.EnableOAuth2Support("test-client-id", "test-realm", "Swagger UI");
+
                     });
+        }
+
+        private static string GetRootUrlFromAppConfig()
+        {
+            var rootUrl = ConfigurationManager.AppSettings.Get("Swagger:RootUrl");
+            if (!string.IsNullOrWhiteSpace(rootUrl))
+            {
+                return rootUrl;
+            }
+            throw new ConfigurationErrorsException("Swagger:RootUrl not specified in AppSettings");
         }
     }
 }
